@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+/* Warm "game table" palette: paper, ink and a terracotta accent */
+:root {
+  --paper: #f7f2e9;
+  --card: #fffdf9;
+  --field: #ffffff;
+  --ink: #221c15;
+  --muted: #74695a;
+  --line: #e7dccb;
+  --accent: #c4512f;
+  --accent-strong: #a3401f;
+  --accent-soft: #f7e2d6;
+  --on-accent: #ffffff;
+  --sun: #e6a03a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #14110e;
+    --card: #1e1915;
+    --field: #191511;
+    --ink: #f3ebdf;
+    --muted: #a99d8b;
+    --line: #362e26;
+    --accent: #ec8460;
+    --accent-strong: #f6a183;
+    --accent-soft: #3b2219;
+    --on-accent: #1a120c;
+    --sun: #f2b75c;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-field: var(--field);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-sun: var(--sun);
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+}
+
+/* Native controls (the lists of the filters and the language menu) follow the theme of the site */
+:root {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+
+select option {
+  background-color: var(--card);
+  color: var(--ink);
+}
+
+body {
+  background-color: var(--paper);
+  /* Faint dot grid, like a game board */
+  background-image: radial-gradient(color-mix(in oklab, var(--line) 70%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* "backwards": hidden during a delay, but no transform left once done (it would pin fixed bars to the element) */
+.animate-rise {
+  animation: rise 0.35s ease-out backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise {
+    animation: none;
+  }
+}

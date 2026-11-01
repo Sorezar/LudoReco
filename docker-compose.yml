@@ -1,0 +1,33 @@
+services:
+  # Data pipeline, run on demand: docker compose run --rm etl
+  etl:
+    build:
+      context: .
+      dockerfile: ETL/Dockerfile
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    profiles: [etl]
+
+  # Recommendation API: loads the model trained by `uv run python -m model.train` (data/models/lambdarank.pt)
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    env_file: .env  # BGC_BEARER_TOKEN, to import a BGG user's ratings
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "8000:8000"
+    restart: unless-stopped  # back up after a restart of Docker or of the computer
+
+  # Interface: http://localhost:3000
+  web:
+    build: web
+    environment:
+      API_URL: http://api:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    restart: unless-stopped
